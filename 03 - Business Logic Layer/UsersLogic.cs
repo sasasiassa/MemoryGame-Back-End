@@ -64,6 +64,16 @@ namespace SonMogendorff
                 password = u.Password
             }).SingleOrDefault();
         }
+        
+        public UserModel GetUserDetailsById(int id)
+        {
+            return DB.UserInfoes.Where(u => u.UserID == id).Select(u => new UserModel
+            {
+                userId = u.UserID,
+                userName = u.Username,
+                fullName = u.FullName,
+            }).SingleOrDefault();
+        }
 
     }
 }

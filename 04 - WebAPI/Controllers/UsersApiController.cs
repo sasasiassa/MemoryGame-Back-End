@@ -44,6 +44,21 @@ namespace SonMogendorff
             }
         }
 
+        [HttpGet]
+        [Route("users/{id}/user-details")]
+        public HttpResponseMessage GetUserDetailsById(int id) // Get the user details by ID
+        {
+            try
+            {
+                UserModel user = usersLogic.GetUserDetailsById(id);
+                return Request.CreateResponse(HttpStatusCode.OK, user);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
         [HttpPost]
         [Route("users")]
         public HttpResponseMessage AddUser(UserModel userModel) // Adds a single user to the DB
@@ -65,14 +80,14 @@ namespace SonMogendorff
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("users/login")]
-        public HttpResponseMessage Login([FromUri] string username, [FromUri] string password)
+        public HttpResponseMessage Login(UserModel userModel)
         {
             //Takes the query string as parameters for the login authorization.
             try
             {
-                UserModel user = usersLogic.GetUserByDetails(username, password);
+                UserModel user = usersLogic.GetUserByDetails(userModel.userName, userModel.password);
                 return Request.CreateResponse(HttpStatusCode.OK, user);
             }
             catch(Exception ex)
